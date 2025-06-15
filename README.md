@@ -1,67 +1,88 @@
 # Projeto de Autenticação com JWT
 
-Este é um projeto Spring Boot que implementa autenticação JWT e controle de acesso baseado em roles (admin e user).
+Este é um projeto de demonstração de autenticação usando Spring Boot e JWT (JSON Web Token).
+
+## Tecnologias Utilizadas
+
+- Java 17
+- Spring Boot 3.2.3
+- Spring Security
+- JWT
+- MySQL
+- Maven
+
+## Funcionalidades
+
+- Cadastro de usuários
+- Autenticação com JWT
+- Controle de acesso baseado em roles (admin e user)
+- Gerenciamento de usuários
 
 ## Requisitos
 
-- Java 17 ou superior
+- JDK 17 ou superior
+- MySQL 8.0 ou superior
 - Maven
-- IDE de sua preferência (recomendado: IntelliJ IDEA ou Eclipse)
 
 ## Configuração
 
 1. Clone o repositório
-2. Abra o projeto em sua IDE
-3. Execute o comando `mvn clean install` para baixar as dependências
-4. Execute a aplicação através da classe `JwtAuthDemoApplication`
+2. Configure o banco de dados MySQL no arquivo `application.properties`
+3. Execute o projeto usando Maven:
+```bash
+mvn spring-boot:run
+```
 
-## Endpoints
+## Endpoints da API
 
 ### Autenticação
 
-- `POST /api/v1/auth/register` - Registra um novo usuário
-  ```json
-  {
-    "name": "Nome do Usuário",
-    "email": "usuario@email.com",
-    "password": "senha123",
-    "role": "USER" // ou "ADMIN"
-  }
-  ```
-
-- `POST /api/v1/auth/login` - Realiza login
-  ```json
-  {
-    "email": "usuario@email.com",
-    "password": "senha123"
-  }
-  ```
+- POST `/api/auth/signup` - Cadastro de novo usuário
+- POST `/api/auth/signin` - Login e obtenção do token JWT
 
 ### Usuários
 
-- `GET /api/v1/users` - Lista todos os usuários (apenas ADMIN)
-- `GET /api/v1/users/{id}` - Obtém um usuário específico (ADMIN ou próprio usuário)
-- `DELETE /api/v1/users/{id}` - Remove um usuário (apenas ADMIN)
+- GET `/api/users` - Listar todos os usuários (apenas admin)
+- GET `/api/users/{id}` - Obter usuário por ID (admin ou próprio usuário)
+- PUT `/api/users/{id}` - Atualizar usuário (admin ou próprio usuário)
+- DELETE `/api/users/{id}` - Deletar usuário (apenas admin)
+
+## Exemplos de Uso
+
+### Cadastro de Usuário
+
+```json
+POST /api/auth/signup
+{
+    "name": "Usuário Teste",
+    "email": "teste@email.com",
+    "password": "senha123",
+    "roles": ["user"]
+}
+```
+
+### Login
+
+```json
+POST /api/auth/signin
+{
+    "email": "teste@email.com",
+    "password": "senha123"
+}
+```
 
 ## Segurança
 
-- Todas as requisições (exceto login e registro) devem incluir o token JWT no header:
-  ```
-  Authorization: Bearer <token>
-  ```
-
-## Banco de Dados
-
-O projeto utiliza o banco de dados H2 em memória. Para acessar o console H2:
-- URL: http://localhost:8080/h2-console
-- JDBC URL: jdbc:h2:mem:testdb
-- Username: sa
-- Password: (vazio)
-
-## Funcionalidades
-
-- Registro de usuários com roles (ADMIN ou USER)
-- Autenticação com JWT
+- Todas as senhas são criptografadas usando BCrypt
+- Tokens JWT são usados para autenticação
 - Controle de acesso baseado em roles
-- Gerenciamento de usuários (listar, visualizar, deletar)
-- Proteção de endpoints baseada em roles 
+- Proteção contra CSRF
+- Validação de dados de entrada
+
+## Contribuição
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
+4. Push para a branch (`git push origin feature/nova-feature`)
+5. Abra um Pull Request 
